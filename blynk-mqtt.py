@@ -1,9 +1,30 @@
-#!/usr/bin/python
+#!/usr/bin/python2
 '''
  Blynk.cc to MQTT broker bridge
  
  Example:
    ./blynk-mqtt.py -t b168ccc8c8734fad98323247afbc1113 --dump
+
+ Arguments:
+   -h, --help
+      Show this help
+   -s, --server
+      Blynk server, defaults to cloud.blynk.cc
+   -p, --port
+      Blynk server port, defaults to 8442
+   -t, --token
+      Your Blync access token
+   --mqtt-server
+      MQTT server name or IP
+   --mqtt-port
+      MQTT server port
+   --topic
+      MQTT topic to subscript and write to
+   --dump
+      write all messages to console
+   --sndbuf
+   --rcvbuf
+   --nodelay
 
  Author:   Volodymyr Shymanskyy, Aliaksei
  License:  The MIT license

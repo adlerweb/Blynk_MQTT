@@ -1,34 +1,30 @@
-Blynk.cc to MQTT broker bridge
-==============================
+# Blynk.cc to MQTT broker bridge
 
-[Blynk.cc](http://blynk.cc/) nice project with nice [Android application](https://play.google.com/store/apps/details?id=cc.blynk), but uses own protocol and library not implemented on some hardware.
+[Blynk.cc](http://blynk.cc/) is a simple DIY-IoT platform with [Android application](https://play.google.com/store/apps/details?id=cc.blynk). It uses a central cloud based or selfhosted server as well as its own protocol to communicate to hardware nodes.
 
-This is simple bridge between Blynk.cc and MQTT. Only virtual pins allowed.
+This is a simple bridge between the Blynk infrastructure and MQTT. It is written in python2 and requires the paho-mqtt python module. Only virtual pins can be used.
 
+## Requirements
 
-Setup
+- Python 2
+- [paho-mqqt](https://pypi.python.org/pypi/paho-mqtt)
+
+## Configuration
+
+You have to supply at least your Blynk application token, MQTT server and a topic to use. You can either enter them directly in the source code or pass them using the arguments described below.
+
+### Configuration using source
 -----
 
-Setup your token and broker:
 ```
 TOKEN = "YourAppToken"
 MQTT_SERVER = "test.mosquitto.org"
 MQTT_PORT = 1883
 TOPIC = "/ESP009xxxxx"
 ```
-And run ```python blynk-mqtt.py```
 
-Requires paho-mqtt python module
-
-
-MQTT Topics
------------
-
-Virtual pin 0 write request will be published as /ESP009xxxxx/vw/0 topic.
-Virtual pin 0 read request will be published as /ESP009xxxxx/vr/0 topic and also will be send answer to Blynk.cc server - latest pin value.
-Where 0 is virtual pin number.
-
-Bridge subscribes for all /ESP009xxxxx/# topics and translate them to virtual pins according translate table
+#### MQTT translations
+The bridge subscribes to all /ESP009xxxxx/# topics. You can use the translation table to add additional aliases:
 ```
 translate_topic = (
 	('sensors/bmpt', 0),
@@ -36,12 +32,32 @@ translate_topic = (
 )
 ```
 
-This mean that value from topic /ESP009xxxxx/sensors/bmpt will be translate to virtual pin 0, for example.
+### Configuration using arguments
 
-Topics like /ESP009xxxxx/vw/0 will be translate to virtual pin 0.
+ - --mqtt-server test.mosquitto.org
+ - --mqtt-port 1883
+ - -t YourAppToken
+ - --topic "/ESP009xxxxx"
+
+## Starting the bridge
+
+Start using ```python2 blynk-mqtt.py```
 
 
-Copyright
----------
+# Internals
 
-This work based on code blynk-library/tests/pseudo-library.py from Blynk.cc project.
+## MQTT Topics
+
+Virtual pin 0 write request will be published as /ESP009xxxxx/vw/0.
+Virtual pin 0 read request will be published as /ESP009xxxxx/vr/0, also an answer containing the latest pin value will be sent to Blynk server
+
+This example will send values from topic /ESP009xxxxx/sensors/bmpt to virtual pin 0.
+
+
+# Copyright
+
+This work based on blynk-library/tests/pseudo-library.py from the Blynk.cc project.
+Written by Volodymyr Shymanskyy, Aliaksei
+Contributors: adlerweb
+
+Licensed under MIT License
