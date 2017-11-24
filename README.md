@@ -14,7 +14,6 @@ This is a simple bridge between the Blynk infrastructure and MQTT. It is written
 You have to supply at least your Blynk application token, MQTT server and a topic to use. You can either enter them directly in the source code or pass them using the arguments described below.
 
 ### Configuration using source
------
 
 ```
 TOKEN = "YourAppToken"
@@ -22,7 +21,6 @@ MQTT_SERVER = "test.mosquitto.org"
 MQTT_PORT = 1883
 TOPIC = "/blynk"
 ```
-The bridge subscribes to all /blynk/# topics in this case.
 
 #### MQTT translations
 You can use the translation table to add additional aliases:
@@ -32,6 +30,7 @@ translate_topic = (
 	('sensors/bmpp', 1),
 )
 ```
+This example will send values from topic /blynk/sensors/bmpt to virtual pin 0.
 
 #### Blynk bridging
 
@@ -56,17 +55,16 @@ When configured values published to /blynk/AnotherAppToken/vw/1 will be relayed 
 
 Start using ```python2 blynk-mqtt.py```
 
-You can now assign this script like any other hardware inside the Blynk-App and as such control or read your MQQT-Devices.
+You can now assign this script like any other hardware inside the Blynk-App and as such control or read your MQTT-Devices.
 
 # Internals
 
 ## MQTT Topics
 
-Virtual pin 0 write request will be published as /ESP009xxxxx/vw/0.
-Virtual pin 0 read request will be published as /ESP009xxxxx/vr/0, also an answer containing the latest pin value will be sent to Blynk server
-
-This example will send values from topic /ESP009xxxxx/sensors/bmpt to virtual pin 0.
-
+The bridge subscribes to all /blynk/# topics in this case.
+Virtual pin 0 write request will be published as /blynk/vw/0.
+Virtual pin 0 read request will be published as /blynk/vr/0, also an answer containing the latest pin value will be sent to Blynk server
+Translations and bridges will be handled as shown above.
 
 # Copyright
 
