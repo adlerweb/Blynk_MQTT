@@ -20,17 +20,30 @@ You have to supply at least your Blynk application token, MQTT server and a topi
 TOKEN = "YourAppToken"
 MQTT_SERVER = "test.mosquitto.org"
 MQTT_PORT = 1883
-TOPIC = "/ESP009xxxxx"
+TOPIC = "/blynk"
 ```
+The bridge subscribes to all /blynk/# topics in this case.
 
 #### MQTT translations
-The bridge subscribes to all /ESP009xxxxx/# topics. You can use the translation table to add additional aliases:
+You can use the translation table to add additional aliases:
 ```
 translate_topic = (
 	('sensors/bmpt', 0),
 	('sensors/bmpp', 1),
 )
 ```
+
+#### Blynk bridging
+
+Using this feature you can control other Blynk-Nodes using MQTT. This requires you to add the other Blynk-nodes access keys into the configuration. Please note the bridging is designed to work directly between the devices so you do not get instant feedback inside the app. Also you'll only be able to send commands to other devices, not receive any messages or values without modifying the existing nodes.
+
+```
+bridges = [
+	"AnotherAppToken"
+]
+```
+
+When configured values published to /blynk/AnotherAppToken/vw/1 will be relayed to the other devices virtual pin 1.
 
 ### Configuration using arguments
 
@@ -43,6 +56,7 @@ translate_topic = (
 
 Start using ```python2 blynk-mqtt.py```
 
+You can now assign this script like any other hardware inside the Blynk-App and as such control or read your MQQT-Devices.
 
 # Internals
 
